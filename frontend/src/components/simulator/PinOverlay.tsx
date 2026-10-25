@@ -31,6 +31,25 @@ interface PinInfo {
   x: number; // CSS pixels
   y: number; // CSS pixels
   signals?: Array<{ type: string; signal?: string }>;
+  description?: string;
+}
+
+/**
+ * Classroom-friendly display aliases. Technical pin IDs remain unchanged so
+ * saved projects and wiring continue to use A/C exactly as upstream expects.
+ */
+function displayDescription(pin: PinInfo): string | undefined {
+  const description = pin.description?.trim();
+  if (!description) return undefined;
+
+  switch (description.toLowerCase()) {
+    case 'anode':
+      return 'Anode (+)';
+    case 'cathode':
+      return 'Cathode (-)';
+    default:
+      return description;
+  }
 }
 
 interface PinOverlayProps {
@@ -148,7 +167,9 @@ export const PinOverlay: React.FC<PinOverlayProps> = ({
   const titleFor = (pin: PinInfo): string => {
     const names = namesAtPad.get(`${pin.x},${pin.y}`) ?? [pin.name];
     const others = names.filter((n) => n !== pin.name);
-    return others.length ? `${pin.name} (${others.join(', ')})` : pin.name;
+    const technicalName = others.length ? `${pin.name} (${others.join(', ')})` : pin.name;
+    const alias = displayDescription(pin);
+    return alias ? `${technicalName} — ${alias}` : technicalName;
   };
 
   return (
@@ -180,6 +201,7 @@ export const PinOverlay: React.FC<PinOverlayProps> = ({
           wrapperOffsetX,
           wrapperOffsetY,
         );
+        const alias = displayDescription(pin);
 
         return (
           <div
@@ -234,6 +256,7 @@ export const PinOverlay: React.FC<PinOverlayProps> = ({
               e.currentTarget.style.transform = 'scale(1)';
             }}
             title={titleFor(pin)}
+            aria-label={alias ? `Pin ${pin.name}: ${alias}` : `Pin ${pin.name}`}
           />
         );
       })}
