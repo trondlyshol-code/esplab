@@ -4,7 +4,7 @@
 
 ESP-Lab skal vere ein webbasert undervisningssimulator for vidaregåande elektro/elektronikk. Elevane skal kunne opne løysinga i nettlesaren frå skulen sitt nettverk utan lokal installasjon.
 
-Første versjon byggjer vidare på Velxio, men skal vere kraftig forenkla og målretta mot undervisning med Arduino Uno og ESP32.
+Første versjon byggjer vidare på Velxio, men skal vere målretta mot undervisning med Arduino Uno og ESP32.
 
 ## V1 – støtta mikrokontrollerar
 
@@ -13,21 +13,40 @@ Første versjon byggjer vidare på Velxio, men skal vere kraftig forenkla og må
 
 Andre kort skal skjulast frå elevgrensesnittet i V1, men kodebasen skal ikkje øydeleggast slik at dei ikkje kan aktiverast igjen seinare.
 
-## V1 – komponentar
+## V1 – komponentbibliotek
 
-Første komponentsett:
+ESP-Lab skal **behalde heile komponentbiblioteket frå original Velxio**. Vi skal ikkje fjerne komponentar berre for å gjere elevgrensesnittet enklare.
 
-- Breadboard
-- LED
-- RGB LED
-- Motstand
-- Trykknapp / brytar
-- Potensiometer
-- Aktiv buzzer
-- Passiv buzzer
-- Servo SG90
+I komponentveljaren skal det i tillegg vere eit eige filter:
 
-Komponentane er valde fordi dei dekkjer dei første grunnøvingane i undervisningsmaterialet: digital utgang, digital inngang, analog inngang, PWM, enkel lyd og servostyring.
+- **Elegoo Kit**
+
+Dette filteret samlar dei komponentane frå Elegoo-settet som allereie har ei reell simulatorimplementering. Ein komponent skal ikkje visast som ein annan modell berre fordi funksjonen liknar. Til dømes skal DHT22 ikkje presenterast som DHT11.
+
+Første verifiserte Elegoo-utval omfattar mellom anna:
+
+- LED og RGB LED
+- motstandar
+- trykknapp og brytar
+- potensiometer
+- buzzer
+- servo
+- HC-SR04
+- joystick
+- PIR
+- LDR / fotoresistor
+- OLED SSD1306
+- keypad
+- steppermotor
+- L293D
+- relé
+- 7-segment
+- MPU6050
+- termistor
+- IR-mottakar og IR-fjernkontroll
+- transistor
+
+Komponentar frå settet som manglar ei passande simulatorimplementering, blir lagde til seinare.
 
 ## V1 – kode og simulering
 
@@ -59,7 +78,7 @@ Elevane skal kunne:
 
 ## Brukargrensesnitt
 
-V1 skal vere enklare enn original Velxio.
+V1 skal vere enklare og meir undervisningsretta enn original Velxio, utan å fjerne simulatorfunksjonar unødvendig.
 
 ### Startskjerm
 
@@ -76,55 +95,58 @@ Arbeidsflata skal ha:
 - kodeeditor
 - simulator/canvas
 - komponentveljar
+- eige Elegoo Kit-filter
 - Start / Stopp
 - compiler output
 - Serial Monitor
 
 ### Språk
 
-Første eigne ESP-Lab-tekstar skal vere på norsk/nynorsk der det er naturleg. Teknisk terminologi som GPIO, Serial Monitor, PWM, I2C og SPI kan behaldast.
+ESP-Lab V1 skal støtte:
+
+- norsk
+- engelsk
+- polsk
+- ukrainsk
+
+Engelsk fungerer som fallback dersom ei tekststreng enno ikkje er omsett. Teknisk terminologi som GPIO, Serial Monitor, PWM, I2C og SPI kan behaldast der det gir meining.
 
 ## Avgrensing i V1
 
-Dette skal ikkje prioriterast i første leveranse:
+Dette skal ikkje prioriterast som eigne ESP-Lab-funksjonar i første leveranse:
 
-- WiFi
-- Bluetooth/BLE
-- NTP
-- MQTT
-- fleire virtuelle ESP32-kort samtidig
-- RFID
-- OLED
-- DHT11
-- ultralydsensor
-- steppermotor
-- DC-motor
-- 7-segment
+- full WiFi-simulering til undervisningsopplegga
+- Bluetooth/BLE-opplegg
+- NTP-opplegg
+- MQTT-opplegg
+- fleire virtuelle ESP32-kort samtidig som undervisningsscenario
+- eigne implementeringar for manglande Elegoo-komponentar
 - lærarinnlogging
 - elevkontoar
 - automatisk vurdering
 
-Desse blir bygde inn i seinare fasar.
+Original Velxio-funksjonalitet kan framleis liggje i kodebasen og vere tilgjengeleg der ho allereie fungerer.
 
 ## Vidare roadmap
 
-### V2 – sensorar og display
+### V2 – Elegoo-komponentar og sensorar
 
 - DHT11
-- LDR / photocell
-- joystick
-- PIR
-- tilt switch
-- HC-SR04
-- OLED SSD1306
-- termistor
+- kontrollere LDR / photocell mot fysisk sett
+- kontrollere joystick
+- kontrollere PIR
+- kontrollere tilt switch
+- kontrollere HC-SR04
+- kontrollere OLED SSD1306
+- kontrollere termistor
+- manglande sensorar frå Elegoo-settet
 
 ### V3 – bussar og meir avansert elektronikk
 
-- I2C
-- SPI
+- I2C-undervisningsopplegg
+- SPI-undervisningsopplegg
 - RC522
-- MPU-6500
+- MPU-6500 / MPU6050-avklaring mot fysisk sett
 - 74HC595
 - 1-sifra 7-segment
 - 4-sifra 7-segment
@@ -176,18 +198,21 @@ V1 er godkjend når følgjande scenario fungerer:
 
 1. Elev opnar ESP-Lab i nettlesar.
 2. Elev vel ESP32 DevKit V1 eller Arduino Uno.
-3. Elev legg inn LED og motstand.
-4. Elev koplar LED til ein GPIO.
-5. Elev skriv eit enkelt Blink-program.
-6. Elev trykker Start.
-7. LED blinkar i simulatoren.
-8. `Serial.println()` blir vist i Serial Monitor.
-9. Prosjektet kan lagrast og opnast igjen.
+3. Elev opnar komponentveljaren og kan velje **Elegoo Kit** eller heile originalbiblioteket.
+4. Elev legg inn LED og motstand.
+5. Elev koplar LED til ein GPIO.
+6. Elev skriv eit enkelt Blink-program.
+7. Elev trykker Start.
+8. LED blinkar i simulatoren.
+9. `Serial.println()` blir vist i Serial Monitor.
+10. Prosjektet kan lagrast og opnast igjen.
 
 ## Prinsipp for vidare utvikling
 
 - Behald Velxio sin fungerande emulatorarkitektur.
+- Behald det komplette originalbiblioteket av komponentar.
+- Bruk Elegoo Kit-filteret som snarveg til undervisningsutstyret.
 - Fjern minst mogleg frå backend i starten.
 - Skjul heller funksjonar i elevgrensesnittet enn å slette dei frå kodebasen.
-- Bygg komponentbiblioteket stegvis etter dei fysiske komponentane elevane faktisk brukar.
-- Test kvar komponent både med ESP32 og Arduino Uno der det gir fagleg meining.
+- Legg berre ein Elegoo-komponent i filteret når simulatoren faktisk har ei passande implementering.
+- Test kvar relevant komponent både med ESP32 og Arduino Uno der det gir fagleg meining.
