@@ -1,23 +1,16 @@
 /**
- * Locale registry — must stay in lockstep with `pro/blog/src/i18n/config.ts`
- * in the velxio_blog repo (the static blog at velxio.dev/blog/). Cookie sync
- * uses the `velxio_locale` cookie shared between both surfaces, so the lists
- * MUST agree on locale codes character-for-character.
+ * ESP-Lab locale registry.
  *
- * When adding or removing a locale, update both files plus
- * `scripts/translate/locales.mjs` in velxio_blog.
+ * V1 deliberately exposes the four languages used in the classroom setup:
+ * English, Norwegian, Polish and Ukrainian. English remains the fallback so
+ * partially translated screens still render meaningful text.
  */
 
 export const LOCALES = [
   "en",
-  "es",
-  "pt-br",
-  "it",
-  "fr",
-  "zh-cn",
-  "de",
-  "ja",
-  "ru",
+  "no",
+  "pl",
+  "uk",
 ] as const;
 
 export type Locale = (typeof LOCALES)[number];
@@ -33,7 +26,7 @@ export type LocaleMeta = {
   htmlLang: string;
   /** Native-language label shown in the language switcher. */
   nativeName: string;
-  /** Open Graph locale code (Facebook). */
+  /** Open Graph locale code. */
   ogLocale: string;
   /** Writing direction. */
   dir: "ltr" | "rtl";
@@ -41,24 +34,9 @@ export type LocaleMeta = {
 
 export const LOCALE_META: Record<Locale, LocaleMeta> = {
   en: { htmlLang: "en", nativeName: "English", ogLocale: "en_US", dir: "ltr" },
-  es: { htmlLang: "es", nativeName: "Español", ogLocale: "es_ES", dir: "ltr" },
-  "pt-br": {
-    htmlLang: "pt-BR",
-    nativeName: "Português (BR)",
-    ogLocale: "pt_BR",
-    dir: "ltr",
-  },
-  it: { htmlLang: "it", nativeName: "Italiano", ogLocale: "it_IT", dir: "ltr" },
-  fr: { htmlLang: "fr", nativeName: "Français", ogLocale: "fr_FR", dir: "ltr" },
-  "zh-cn": {
-    htmlLang: "zh-CN",
-    nativeName: "简体中文",
-    ogLocale: "zh_CN",
-    dir: "ltr",
-  },
-  de: { htmlLang: "de", nativeName: "Deutsch", ogLocale: "de_DE", dir: "ltr" },
-  ja: { htmlLang: "ja", nativeName: "日本語", ogLocale: "ja_JP", dir: "ltr" },
-  ru: { htmlLang: "ru", nativeName: "Русский", ogLocale: "ru_RU", dir: "ltr" },
+  no: { htmlLang: "no", nativeName: "Norsk", ogLocale: "no_NO", dir: "ltr" },
+  pl: { htmlLang: "pl", nativeName: "Polski", ogLocale: "pl_PL", dir: "ltr" },
+  uk: { htmlLang: "uk", nativeName: "Українська", ogLocale: "uk_UA", dir: "ltr" },
 };
 
 export function isLocale(value: unknown): value is Locale {
