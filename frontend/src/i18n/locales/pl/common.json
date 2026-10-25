@@ -1,0 +1,30 @@
+{
+  "header": {
+    "skipToContent": "Przejdź do treści",
+    "openMenu": "Otwórz menu",
+    "closeMenu": "Zamknij menu",
+    "nav": {
+      "home": "Strona główna",
+      "documentation": "Dokumentacja",
+      "examples": "Przykłady",
+      "editor": "Edytor",
+      "about": "O programie",
+      "github": "GitHub",
+      "classroom": "Dla szkół"
+    },
+    "auth": {
+      "signIn": "Zaloguj się",
+      "signUp": "Utwórz konto",
+      "myProjects": "Moje projekty",
+      "signOut": "Wyloguj się"
+    },
+    "language": "Język",
+    "search": "Szukaj",
+    "shareProject": "Udostępnij projekt"
+  },
+  "profile": {
+    "newProject": "Nowy projekt",
+    "loading": "Ładowanie…",
+    "empty": "Brak publicznych projektów."
+  }
+}
