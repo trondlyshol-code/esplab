@@ -1,0 +1,30 @@
+{
+  "header": {
+    "skipToContent": "Gå til innhald",
+    "openMenu": "Opne meny",
+    "closeMenu": "Lukk meny",
+    "nav": {
+      "home": "Heim",
+      "documentation": "Dokumentasjon",
+      "examples": "Døme",
+      "editor": "Editor",
+      "about": "Om",
+      "github": "GitHub",
+      "classroom": "For skular"
+    },
+    "auth": {
+      "signIn": "Logg inn",
+      "signUp": "Opprett konto",
+      "myProjects": "Mine prosjekt",
+      "signOut": "Logg ut"
+    },
+    "language": "Språk",
+    "search": "Søk",
+    "shareProject": "Del prosjekt"
+  },
+  "profile": {
+    "newProject": "Nytt prosjekt",
+    "loading": "Lastar…",
+    "empty": "Ingen offentlege prosjekt enno."
+  }
+}
