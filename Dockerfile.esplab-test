@@ -1,0 +1,29 @@
+# ESP-Lab development image
+#
+# This image is intentionally used only for testing ESP-Lab frontend changes.
+# It builds the frontend from this repository and overlays it on the official
+# Velxio self-hosted image, which already contains the backend, ESP-IDF and
+# ESP32 QEMU runtime required by the simulator.
+#
+# This avoids requiring QEMU binary build credentials for every classroom-UI
+# iteration. For a fully independent production image, use Dockerfile.standalone
+# with the required QEMU runtime files/license path described upstream.
+
+FROM node:20 AS frontend-builder
+
+WORKDIR /app
+COPY frontend/ frontend/
+COPY scripts/ scripts/
+
+WORKDIR /app/frontend
+RUN npm install -g npm@11 --no-audit --no-fund \
+ && rm -f package-lock.json \
+ && npm install --include=optional \
+ && npm run build:docker
+
+FROM ghcr.io/davidmonterocrespo24/velxio:master
+
+# Replace only the browser frontend. The backend/emulators remain the tested
+# versions from the upstream self-hosted image.
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=frontend-builder /app/frontend/dist /usr/share/nginx/html
