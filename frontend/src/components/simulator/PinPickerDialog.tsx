@@ -16,29 +16,13 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getEducationalPinAlias } from '../../utils/pinDisplayAliases';
 
 interface PinInfoLike {
   name: string;
   x: number;
   y: number;
   description?: string;
-}
-
-/**
- * Classroom-friendly display aliases. Technical pin IDs are never changed.
- */
-function displayPinDescription(pin: PinInfoLike): string | undefined {
-  const description = pin.description?.trim();
-  if (!description) return undefined;
-
-  switch (description.toLowerCase()) {
-    case 'anode':
-      return 'Anode (+)';
-    case 'cathode':
-      return 'Cathode (-)';
-    default:
-      return description;
-  }
 }
 
 interface PinPickerDialogProps {
@@ -93,7 +77,7 @@ export const PinPickerDialog: React.FC<PinPickerDialogProps> = ({
     const q = filter.trim().toLowerCase();
     if (!q) return pins;
     return pins.filter((p) => {
-      const displayDescription = displayPinDescription(p);
+      const displayDescription = getEducationalPinAlias(p, pins) ?? p.description;
       return (
         p.name.toLowerCase().includes(q) ||
         (displayDescription && displayDescription.toLowerCase().includes(q))
@@ -216,7 +200,7 @@ export const PinPickerDialog: React.FC<PinPickerDialogProps> = ({
             <div style={{ padding: 16, color: 'var(--wb-11)', fontSize: 13 }}>{t('editor.pinPicker.noMatch')}</div>
           ) : (
             filteredPins.map((pin) => {
-              const displayDescription = displayPinDescription(pin);
+              const displayDescription = getEducationalPinAlias(pin, pins) ?? pin.description;
               return (
                 <button
                   key={pin.name}
