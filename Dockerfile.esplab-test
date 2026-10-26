@@ -19,6 +19,7 @@ WORKDIR /app/frontend
 RUN npm install -g npm@11 --no-audit --no-fund \
  && rm -f package-lock.json \
  && npm install --include=optional \
+ && node ../scripts/apply-esplab-v1-patches.mjs \
  && npm run build:docker
 
 FROM ghcr.io/davidmonterocrespo24/velxio:master
