@@ -1,0 +1,106 @@
+{
+  "editor": {
+    "toolbar": {
+      "languageMode": "Tryb języka",
+      "compile": {
+        "addBoard": "Dodaj płytkę, aby kompilować",
+        "loading": "Ładowanie…",
+        "loadMicropython": "Wczytaj MicroPython",
+        "compile": "Kompiluj (Ctrl+B)"
+      },
+      "run": {
+        "addBoard": "Dodaj płytkę, aby uruchomić",
+        "runMicropython": "Uruchom MicroPython",
+        "run": "Uruchom",
+        "runActiveOnly": "Uruchom tylko {{name}}",
+        "options": "Opcje uruchamiania"
+      },
+      "stop": "Zatrzymaj",
+      "reset": "Resetuj",
+      "compileAll": "Kompiluj wszystkie płytki",
+      "runAll": "Uruchom wszystkie płytki",
+      "libraries": {
+        "title": "Wyszukaj i zainstaluj biblioteki Arduino",
+        "label": "Biblioteki"
+      },
+      "importLabel": "Importuj projekt",
+      "exportVlxLabel": "Eksportuj projekt (.vlx)",
+      "exportLabel": "Eksportuj projekt (.zip)"
+    },
+    "fileExplorer": {
+      "workspace": "OBSZAR ROBOCZY",
+      "newWorkspace": "Nowy obszar roboczy",
+      "saveProject": "Zapisz projekt (Ctrl+S)",
+      "emptyState": "Dodaj płytkę do obszaru roboczego, aby rozpocząć pisanie kodu.",
+      "status": {
+        "running": "Uruchomiono",
+        "compiled": "Skompilowano",
+        "idle": "Gotowe"
+      },
+      "saving": "zapisywanie…",
+      "saved": "zapisano",
+      "saveFailed": "błąd zapisu"
+    },
+    "canvas": {
+      "status": {
+        "running": "Uruchomiono",
+        "stopped": "Zatrzymano"
+      },
+      "activeBoard": "Aktywna płytka",
+      "noBoard": "Brak płytki",
+      "serial": "Monitor szeregowy",
+      "scope": "Oscyloskop",
+      "zoomIn": "Powiększ",
+      "zoomOut": "Pomniejsz",
+      "resetView": "Resetuj widok",
+      "addComponentTitle": "Dodaj komponent",
+      "add": "Dodaj",
+      "removeBoard": "Usuń płytkę",
+      "boardOptions": "Ustawienia płytki"
+    },
+    "componentPicker": {
+      "title": "Dodaj komponent",
+      "close": "Zamknij",
+      "searchPlaceholder": "Szukaj komponentów…",
+      "clearSearch": "Wyczyść wyszukiwanie",
+      "allComponents": "Wszystkie komponenty",
+      "elegooKit": "Zestaw Elegoo",
+      "boards": "Płytki",
+      "loading": "Ładowanie komponentów…",
+      "noResults": "Nie znaleziono komponentów",
+      "clearFilters": "Wyczyść filtry",
+      "recentlyUsed": "Ostatnio używane",
+      "searchResults": "Wyniki wyszukiwania"
+    },
+    "shell": {
+      "code": "Kod",
+      "both": "Oba",
+      "circuit": "Układ",
+      "showExplorer": "Pokaż eksplorator plików",
+      "hideExplorer": "Ukryj eksplorator plików",
+      "viewMode": "Tryb widoku"
+    },
+    "console": {
+      "title": "Wyjście",
+      "filterAll": "Wszystkie",
+      "filterErrors": "Błędy",
+      "filterWarnings": "Ostrzeżenia",
+      "auto": "Auto",
+      "clear": "Wyczyść wyjście",
+      "close": "Zamknij",
+      "empty": "Brak wyników kompilacji. Kliknij Kompiluj, aby rozpocząć."
+    },
+    "newProject": {
+      "title": "Rozpocznij nowy projekt",
+      "subtitle": "Wybierz pusty obszar roboczy lub płytkę z gotowym przykładem Blink.",
+      "blankTitle": "Pusty projekt",
+      "blankDesc": "Pusty obszar roboczy – samodzielnie dodaj płytki i komponenty",
+      "cancel": "Anuluj",
+      "arduinoDesc": "Arduino Uno – prosta płytka do nauki podstaw wejść i wyjść",
+      "esp32Desc": "ESP32 DevKit V1 – GPIO, PWM, czujniki, WiFi i Bluetooth"
+    },
+    "boardPicker": {
+      "title": "Dodaj płytkę"
+    }
+  }
+}

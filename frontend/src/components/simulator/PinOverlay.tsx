@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { useIsCoarsePointer } from '../../utils/useTouchDevice';
 import { rotatePinLocal } from '../../utils/pinPositionCalculator';
 import { readPinInfo } from '../../utils/readPinInfo';
+import { getEducationalPinAlias } from '../../utils/pinDisplayAliases';
 
 /** Minimum visual pin size in *world* pixels at zoom 1 */
 const PIN_VISUAL = 12;
@@ -31,6 +32,7 @@ interface PinInfo {
   x: number; // CSS pixels
   y: number; // CSS pixels
   signals?: Array<{ type: string; signal?: string }>;
+  description?: string;
 }
 
 interface PinOverlayProps {
@@ -148,7 +150,9 @@ export const PinOverlay: React.FC<PinOverlayProps> = ({
   const titleFor = (pin: PinInfo): string => {
     const names = namesAtPad.get(`${pin.x},${pin.y}`) ?? [pin.name];
     const others = names.filter((n) => n !== pin.name);
-    return others.length ? `${pin.name} (${others.join(', ')})` : pin.name;
+    const technicalName = others.length ? `${pin.name} (${others.join(', ')})` : pin.name;
+    const alias = getEducationalPinAlias(pin, pins);
+    return alias ? `${technicalName} — ${alias}` : technicalName;
   };
 
   return (
@@ -180,6 +184,7 @@ export const PinOverlay: React.FC<PinOverlayProps> = ({
           wrapperOffsetX,
           wrapperOffsetY,
         );
+        const alias = getEducationalPinAlias(pin, pins);
 
         return (
           <div
@@ -234,6 +239,7 @@ export const PinOverlay: React.FC<PinOverlayProps> = ({
               e.currentTarget.style.transform = 'scale(1)';
             }}
             title={titleFor(pin)}
+            aria-label={alias ? `Pin ${pin.name}: ${alias}` : `Pin ${pin.name}`}
           />
         );
       })}

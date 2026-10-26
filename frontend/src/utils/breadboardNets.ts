@@ -23,7 +23,7 @@
  * knowing anything about the part.
  */
 
-const BREADBOARD_IDS = new Set(['breadboard', 'breadboard-mini']);
+const BREADBOARD_IDS = new Set(['breadboard', 'breadboard-mini', 'breadboard-400']);
 
 /** True when the metadataId is one of the breadboard parts. */
 export function isBreadboard(metadataId: string): boolean {

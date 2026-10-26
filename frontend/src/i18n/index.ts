@@ -1,18 +1,9 @@
 /**
- * react-i18next bootstrap. Loads the English source bundle synchronously and
- * lazy-imports the other locales on demand so the initial paint stays small
- * (each non-default JSON adds a few KB; loading 8 of them up front would
- * pad the bundle without payoff for English-speaking visitors).
+ * react-i18next bootstrap for ESP-Lab.
  *
- * The active locale is determined in priority order:
- *   1. URL prefix (`/es/...`) — the source of truth, what crawlers see.
- *   2. velxio_locale cookie — sticky preference, shared with the blog.
- *   3. Browser languages — Accept-Language fallback.
- *   4. DEFAULT_LOCALE ("en") — last resort.
- *
- * The URL is the source of truth at runtime; the cookie only seeds the
- * very first navigation so a returning visitor lands on their language
- * without a redirect.
+ * English is bundled synchronously and is the fallback language. Norwegian,
+ * Polish and Ukrainian are loaded on demand. Locale bundles may be partial:
+ * untranslated keys automatically fall back to English.
  */
 
 import i18n from "i18next";
@@ -30,33 +21,27 @@ import enSeo3 from "./locales/en/seo3.json";
 import enSeo4 from "./locales/en/seo4.json";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./config";
 
-/**
- * Deep merge for locale resource files. The namespace used to be built
- * with a SHALLOW spread, so a top-level section present in two files had
- * the later file silently clobber the earlier one wholesale: common2's
- * `editor` erased common.json's `editor.share.*` (the Share modal's
- * visibility labels rendered as raw keys), and the same collision on
- * `header` later wiped `header.auth.*` — the account menu showed
- * "header.auth.signOut". Merging by key ends the failure class.
- */
 function deepMerge(
   base: Record<string, unknown>,
   extra: Record<string, unknown>,
 ): Record<string, unknown> {
   const out: Record<string, unknown> = { ...base };
-  for (const [k, v] of Object.entries(extra)) {
-    const prev = out[k];
+  for (const [key, value] of Object.entries(extra)) {
+    const previous = out[key];
     if (
-      prev && v &&
-      typeof prev === "object" && typeof v === "object" &&
-      !Array.isArray(prev) && !Array.isArray(v)
+      previous &&
+      value &&
+      typeof previous === "object" &&
+      typeof value === "object" &&
+      !Array.isArray(previous) &&
+      !Array.isArray(value)
     ) {
-      out[k] = deepMerge(
-        prev as Record<string, unknown>,
-        v as Record<string, unknown>,
+      out[key] = deepMerge(
+        previous as Record<string, unknown>,
+        value as Record<string, unknown>,
       );
     } else {
-      out[k] = v;
+      out[key] = value;
     }
   }
   return out;
@@ -67,11 +52,6 @@ type Namespace = (typeof NAMESPACES)[number];
 
 const SUPPORTED_LANGS = LOCALES as readonly string[];
 
-// Init is synchronous for the default locale (resources are inlined via
-// the static import above), so we don't need to await the returned
-// Promise for first-paint correctness. Awaiting it would force the
-// project's tsconfig to enable top-level-await for ESM, which we're
-// avoiding to keep build settings minimal.
 void i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -90,84 +70,67 @@ void i18n
         },
       },
     },
-    // Start at the default locale (its resources are inlined above). The
-    // active locale is then driven from the URL by LocaleSync after mount,
-    // which lazy-loads the matching bundle and performs a real
-    // changeLanguage — the event that makes subscribed components re-render.
-    // Seeding `lng` to the URL locale here instead left direct loads of a
-    // non-default URL stuck on the English fallback, because LocaleSync's
-    // `i18n.language !== target` guard was already satisfied so the bundle
-    // was never fetched.
     lng: DEFAULT_LOCALE,
     fallbackLng: DEFAULT_LOCALE,
     supportedLngs: SUPPORTED_LANGS,
-    // Our locale codes are lowercase with a lowercase region ("zh-cn",
-    // "pt-br"). i18next's default code formatting rewrites those to
-    // "zh-CN" / "pt-BR", which then fail the `supportedLngs` check and get
-    // dropped from the resolve hierarchy — leaving only the English
-    // fallback, so those two locales never resolved their own bundle.
-    // Forcing lowercase keeps the codes consistent with the bundles.
     lowerCaseLng: true,
     ns: NAMESPACES,
     defaultNS: "common",
-    interpolation: { escapeValue: false }, // React already escapes
-    react: {
-      useSuspense: false, // we register resources synchronously in dev
-    },
+    interpolation: { escapeValue: false },
+    react: { useSuspense: false },
     detection: {
-      // LocaleSync makes the locale decision from the URL after mount;
-      // detector is left configured for future fallback paths only.
       order: ["path", "cookie", "navigator"],
       lookupCookie: "velxio_locale",
-      caches: [], // we manage the cookie in src/i18n/cookie.ts
+      caches: [],
     },
   });
 
+async function optionalLocaleFile(
+  loader: () => Promise<unknown>,
+): Promise<Record<string, unknown>> {
+  try {
+    const module = (await loader()) as { default?: Record<string, unknown> } & Record<string, unknown>;
+    return module.default ?? module;
+  } catch {
+    return {};
+  }
+}
+
 /**
- * Lazy-load a non-English locale's bundle and register it with i18next.
- * Returns once the resources are available so callers can `await` it
- * before triggering i18n.changeLanguage() for instant UI swap.
+ * Lazy-load a locale bundle. Only common.json is expected for a minimal
+ * ESP-Lab translation; the other upstream Velxio resource files are optional.
  */
 export async function loadLocale(locale: Locale): Promise<void> {
   if (locale === DEFAULT_LOCALE) return;
   if (i18n.hasResourceBundle(locale, "common")) return;
-  const [
-    commonMod,
-    common2Mod,
-    releasesMod,
-    docsMod,
-    docs2Mod,
-    seoMod,
-    seo2Mod,
-    seo3Mod,
-    seo4Mod,
-  ] = await Promise.all([
-    import(`./locales/${locale}/common.json`),
-    import(`./locales/${locale}/common2.json`).catch(() => ({ default: {} })),
-    import(`./locales/${locale}/releases.json`),
-    import(`./locales/${locale}/docs.json`),
-    import(`./locales/${locale}/docs2.json`),
-    import(`./locales/${locale}/seo.json`).catch(() => ({ default: { seo: {} } })),
-    import(`./locales/${locale}/seo2.json`).catch(() => ({ default: { seo: {} } })),
-    import(`./locales/${locale}/seo3.json`).catch(() => ({ default: { seo: {} } })),
-    import(`./locales/${locale}/seo4.json`).catch(() => ({ default: { seo: {} } })),
+
+  const [common, common2, releases, docs1, docs2, seo1, seo2, seo3, seo4] = await Promise.all([
+    optionalLocaleFile(() => import(`./locales/${locale}/common.json`)),
+    optionalLocaleFile(() => import(`./locales/${locale}/common2.json`)),
+    optionalLocaleFile(() => import(`./locales/${locale}/releases.json`)),
+    optionalLocaleFile(() => import(`./locales/${locale}/docs.json`)),
+    optionalLocaleFile(() => import(`./locales/${locale}/docs2.json`)),
+    optionalLocaleFile(() => import(`./locales/${locale}/seo.json`)),
+    optionalLocaleFile(() => import(`./locales/${locale}/seo2.json`)),
+    optionalLocaleFile(() => import(`./locales/${locale}/seo3.json`)),
+    optionalLocaleFile(() => import(`./locales/${locale}/seo4.json`)),
   ]);
-  const docs1Body = (docsMod.default ?? docsMod).docs ?? {};
-  const docs2Body = (docs2Mod.default ?? docs2Mod).docs ?? {};
+
+  const docs1Body = (docs1.docs as Record<string, unknown> | undefined) ?? {};
+  const docs2Body = (docs2.docs as Record<string, unknown> | undefined) ?? {};
   const seoBody = {
-    ...((seoMod.default ?? seoMod).seo ?? {}),
-    ...((seo2Mod.default ?? seo2Mod).seo ?? {}),
-    ...((seo3Mod.default ?? seo3Mod).seo ?? {}),
-    ...((seo4Mod.default ?? seo4Mod).seo ?? {}),
+    ...((seo1.seo as Record<string, unknown> | undefined) ?? {}),
+    ...((seo2.seo as Record<string, unknown> | undefined) ?? {}),
+    ...((seo3.seo as Record<string, unknown> | undefined) ?? {}),
+    ...((seo4.seo as Record<string, unknown> | undefined) ?? {}),
   };
+
   const merged = {
-    ...deepMerge(
-      deepMerge(commonMod.default ?? commonMod, common2Mod.default ?? common2Mod),
-      releasesMod.default ?? releasesMod,
-    ),
+    ...deepMerge(deepMerge(common, common2), releases),
     seo: seoBody,
     docs: { ...docs1Body, ...docs2Body },
   };
+
   i18n.addResourceBundle(locale, "common", merged, true, true);
 }
 

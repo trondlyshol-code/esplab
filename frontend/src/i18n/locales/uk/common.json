@@ -1,0 +1,30 @@
+{
+  "header": {
+    "skipToContent": "Перейти до вмісту",
+    "openMenu": "Відкрити меню",
+    "closeMenu": "Закрити меню",
+    "nav": {
+      "home": "Головна",
+      "documentation": "Документація",
+      "examples": "Приклади",
+      "editor": "Редактор",
+      "about": "Про програму",
+      "github": "GitHub",
+      "classroom": "Для шкіл"
+    },
+    "auth": {
+      "signIn": "Увійти",
+      "signUp": "Створити обліковий запис",
+      "myProjects": "Мої проєкти",
+      "signOut": "Вийти"
+    },
+    "language": "Мова",
+    "search": "Пошук",
+    "shareProject": "Поділитися проєктом"
+  },
+  "profile": {
+    "newProject": "Новий проєкт",
+    "loading": "Завантаження…",
+    "empty": "Публічних проєктів поки немає."
+  }
+}

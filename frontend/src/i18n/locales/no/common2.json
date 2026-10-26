@@ -1,0 +1,106 @@
+{
+  "editor": {
+    "toolbar": {
+      "languageMode": "Språkmodus",
+      "compile": {
+        "addBoard": "Legg til eit kort for å kompilere",
+        "loading": "Lastar…",
+        "loadMicropython": "Last MicroPython",
+        "compile": "Kompiler (Ctrl+B)"
+      },
+      "run": {
+        "addBoard": "Legg til eit kort for å køyre",
+        "runMicropython": "Køyr MicroPython",
+        "run": "Køyr",
+        "runActiveOnly": "Køyr berre {{name}}",
+        "options": "Køyreval"
+      },
+      "stop": "Stopp",
+      "reset": "Nullstill",
+      "compileAll": "Kompiler alle kort",
+      "runAll": "Køyr alle kort",
+      "libraries": {
+        "title": "Søk etter og installer Arduino-bibliotek",
+        "label": "Bibliotek"
+      },
+      "importLabel": "Importer prosjekt",
+      "exportVlxLabel": "Eksporter prosjekt (.vlx)",
+      "exportLabel": "Eksporter prosjekt (.zip)"
+    },
+    "fileExplorer": {
+      "workspace": "ARBEIDSOMRÅDE",
+      "newWorkspace": "Nytt arbeidsområde",
+      "saveProject": "Lagre prosjekt (Ctrl+S)",
+      "emptyState": "Legg eit kort på arbeidsflata for å begynne å skrive kode.",
+      "status": {
+        "running": "Køyrer",
+        "compiled": "Kompilert",
+        "idle": "Klar"
+      },
+      "saving": "lagrar…",
+      "saved": "lagra",
+      "saveFailed": "lagring feila"
+    },
+    "canvas": {
+      "status": {
+        "running": "Køyrer",
+        "stopped": "Stoppa"
+      },
+      "activeBoard": "Aktivt kort",
+      "noBoard": "Ingen kort",
+      "serial": "Seriell",
+      "scope": "Oscilloskop",
+      "zoomIn": "Zoom inn",
+      "zoomOut": "Zoom ut",
+      "resetView": "Nullstill visning",
+      "addComponentTitle": "Legg til komponent",
+      "add": "Legg til",
+      "removeBoard": "Fjern kort",
+      "boardOptions": "Kortinnstillingar"
+    },
+    "componentPicker": {
+      "title": "Legg til komponent",
+      "close": "Lukk",
+      "searchPlaceholder": "Søk etter komponentar…",
+      "clearSearch": "Tøm søk",
+      "allComponents": "Alle komponentar",
+      "elegooKit": "Elegoo-sett",
+      "boards": "Kort",
+      "loading": "Lastar komponentar…",
+      "noResults": "Ingen komponentar funne",
+      "clearFilters": "Tøm filter",
+      "recentlyUsed": "Nyleg brukt",
+      "searchResults": "Søkeresultat"
+    },
+    "shell": {
+      "code": "Kode",
+      "both": "Begge",
+      "circuit": "Kopling",
+      "showExplorer": "Vis filutforskar",
+      "hideExplorer": "Skjul filutforskar",
+      "viewMode": "Visingsmodus"
+    },
+    "console": {
+      "title": "Utdata",
+      "filterAll": "Alle",
+      "filterErrors": "Feil",
+      "filterWarnings": "Åtvaringar",
+      "auto": "Auto",
+      "clear": "Tøm utdata",
+      "close": "Lukk",
+      "empty": "Ingen kompileringsdata enno. Trykk Kompiler for å starte."
+    },
+    "newProject": {
+      "title": "Start eit nytt prosjekt",
+      "subtitle": "Vel eit tomt arbeidsområde eller eit kort med eit ferdig Blink-døme.",
+      "blankTitle": "Tomt prosjekt",
+      "blankDesc": "Tomt arbeidsområde – legg til kort og komponentar sjølv",
+      "cancel": "Avbryt",
+      "arduinoDesc": "Arduino Uno – enkel og god for grunnleggande I/O",
+      "esp32Desc": "ESP32 DevKit V1 – GPIO, PWM, sensorar, WiFi og Bluetooth"
+    },
+    "boardPicker": {
+      "title": "Legg til kort"
+    }
+  }
+}

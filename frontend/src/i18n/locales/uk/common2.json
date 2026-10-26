@@ -1,0 +1,106 @@
+{
+  "editor": {
+    "toolbar": {
+      "languageMode": "Мовний режим",
+      "compile": {
+        "addBoard": "Додайте плату для компіляції",
+        "loading": "Завантаження…",
+        "loadMicropython": "Завантажити MicroPython",
+        "compile": "Компілювати (Ctrl+B)"
+      },
+      "run": {
+        "addBoard": "Додайте плату для запуску",
+        "runMicropython": "Запустити MicroPython",
+        "run": "Запустити",
+        "runActiveOnly": "Запустити лише {{name}}",
+        "options": "Параметри запуску"
+      },
+      "stop": "Зупинити",
+      "reset": "Скинути",
+      "compileAll": "Компілювати всі плати",
+      "runAll": "Запустити всі плати",
+      "libraries": {
+        "title": "Пошук і встановлення бібліотек Arduino",
+        "label": "Бібліотеки"
+      },
+      "importLabel": "Імпортувати проєкт",
+      "exportVlxLabel": "Експортувати проєкт (.vlx)",
+      "exportLabel": "Експортувати проєкт (.zip)"
+    },
+    "fileExplorer": {
+      "workspace": "РОБОЧА ОБЛАСТЬ",
+      "newWorkspace": "Нова робоча область",
+      "saveProject": "Зберегти проєкт (Ctrl+S)",
+      "emptyState": "Додайте плату на робочу область, щоб почати писати код.",
+      "status": {
+        "running": "Працює",
+        "compiled": "Скомпільовано",
+        "idle": "Готово"
+      },
+      "saving": "збереження…",
+      "saved": "збережено",
+      "saveFailed": "помилка збереження"
+    },
+    "canvas": {
+      "status": {
+        "running": "Працює",
+        "stopped": "Зупинено"
+      },
+      "activeBoard": "Активна плата",
+      "noBoard": "Немає плати",
+      "serial": "Послідовний монітор",
+      "scope": "Осцилограф",
+      "zoomIn": "Збільшити",
+      "zoomOut": "Зменшити",
+      "resetView": "Скинути вигляд",
+      "addComponentTitle": "Додати компонент",
+      "add": "Додати",
+      "removeBoard": "Видалити плату",
+      "boardOptions": "Налаштування плати"
+    },
+    "componentPicker": {
+      "title": "Додати компонент",
+      "close": "Закрити",
+      "searchPlaceholder": "Пошук компонентів…",
+      "clearSearch": "Очистити пошук",
+      "allComponents": "Усі компоненти",
+      "elegooKit": "Набір Elegoo",
+      "boards": "Плати",
+      "loading": "Завантаження компонентів…",
+      "noResults": "Компонентів не знайдено",
+      "clearFilters": "Очистити фільтри",
+      "recentlyUsed": "Нещодавно використані",
+      "searchResults": "Результати пошуку"
+    },
+    "shell": {
+      "code": "Код",
+      "both": "Обидва",
+      "circuit": "Схема",
+      "showExplorer": "Показати провідник файлів",
+      "hideExplorer": "Сховати провідник файлів",
+      "viewMode": "Режим перегляду"
+    },
+    "console": {
+      "title": "Вивід",
+      "filterAll": "Усі",
+      "filterErrors": "Помилки",
+      "filterWarnings": "Попередження",
+      "auto": "Авто",
+      "clear": "Очистити вивід",
+      "close": "Закрити",
+      "empty": "Результатів компіляції ще немає. Натисніть Компілювати, щоб почати."
+    },
+    "newProject": {
+      "title": "Створити новий проєкт",
+      "subtitle": "Виберіть порожню робочу область або плату з готовим прикладом Blink.",
+      "blankTitle": "Порожній проєкт",
+      "blankDesc": "Порожня робоча область – додайте плати й компоненти самостійно",
+      "cancel": "Скасувати",
+      "arduinoDesc": "Arduino Uno – проста плата для вивчення базових входів і виходів",
+      "esp32Desc": "ESP32 DevKit V1 – GPIO, PWM, датчики, WiFi та Bluetooth"
+    },
+    "boardPicker": {
+      "title": "Додати плату"
+    }
+  }
+}

@@ -16,6 +16,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getEducationalPinAlias } from '../../utils/pinDisplayAliases';
 
 interface PinInfoLike {
   name: string;
@@ -75,11 +76,13 @@ export const PinPickerDialog: React.FC<PinPickerDialogProps> = ({
   const filteredPins = useMemo(() => {
     const q = filter.trim().toLowerCase();
     if (!q) return pins;
-    return pins.filter(
-      (p) =>
+    return pins.filter((p) => {
+      const displayDescription = getEducationalPinAlias(p, pins) ?? p.description;
+      return (
         p.name.toLowerCase().includes(q) ||
-        (p.description && p.description.toLowerCase().includes(q)),
-    );
+        (displayDescription && displayDescription.toLowerCase().includes(q))
+      );
+    });
   }, [pins, filter]);
 
   return (
@@ -196,51 +199,54 @@ export const PinPickerDialog: React.FC<PinPickerDialogProps> = ({
           {filteredPins.length === 0 ? (
             <div style={{ padding: 16, color: 'var(--wb-11)', fontSize: 13 }}>{t('editor.pinPicker.noMatch')}</div>
           ) : (
-            filteredPins.map((pin) => (
-              <button
-                key={pin.name}
-                type="button"
-                onClick={() => onPinSelect(targetId, pin.name)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  width: '100%',
-                  textAlign: 'left',
-                  padding: '12px 12px',
-                  margin: '2px 0',
-                  background: 'var(--wb-7)',
-                  color: 'var(--wb-13)',
-                  border: '1px solid transparent',
-                  borderRadius: 6,
-                  cursor: 'pointer',
-                  fontSize: 14,
-                  minHeight: 44,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--wb-8)';
-                  e.currentTarget.style.borderColor = '#007acc';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'var(--wb-7)';
-                  e.currentTarget.style.borderColor = 'transparent';
-                }}
-              >
-                <span style={{ color: '#00d9ff', fontWeight: 600, marginRight: 10 }}>
-                  {pin.name}
-                </span>
-                {pin.description && (
-                  <span style={{ color: 'var(--wb-11)', fontSize: 12, flex: 1, minWidth: 0 }}>
-                    {pin.description}
-                  </span>
-                )}
-                <span
-                  aria-hidden="true"
-                  style={{ marginLeft: 'auto', color: '#007acc', fontSize: 16, fontWeight: 700 }}
+            filteredPins.map((pin) => {
+              const displayDescription = getEducationalPinAlias(pin, pins) ?? pin.description;
+              return (
+                <button
+                  key={pin.name}
+                  type="button"
+                  onClick={() => onPinSelect(targetId, pin.name)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '100%',
+                    textAlign: 'left',
+                    padding: '12px 12px',
+                    margin: '2px 0',
+                    background: 'var(--wb-7)',
+                    color: 'var(--wb-13)',
+                    border: '1px solid transparent',
+                    borderRadius: 6,
+                    cursor: 'pointer',
+                    fontSize: 14,
+                    minHeight: 44,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'var(--wb-8)';
+                    e.currentTarget.style.borderColor = '#007acc';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'var(--wb-7)';
+                    e.currentTarget.style.borderColor = 'transparent';
+                  }}
                 >
-                  →
-                </span>
-              </button>
-            ))
+                  <span style={{ color: '#00d9ff', fontWeight: 600, marginRight: 10 }}>
+                    {pin.name}
+                  </span>
+                  {displayDescription && (
+                    <span style={{ color: 'var(--wb-11)', fontSize: 12, flex: 1, minWidth: 0 }}>
+                      {displayDescription}
+                    </span>
+                  )}
+                  <span
+                    aria-hidden="true"
+                    style={{ marginLeft: 'auto', color: '#007acc', fontSize: 16, fontWeight: 700 }}
+                  >
+                    →
+                  </span>
+                </button>
+              );
+            })
           )}
         </div>
 
