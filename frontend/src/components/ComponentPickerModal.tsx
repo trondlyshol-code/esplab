@@ -237,6 +237,9 @@ const ELEGOO_COMPONENT_IDS = new Set([
   'bjt-2n2222',
 ]);
 
+/** Boards physically represented in the classroom Elegoo ESP32 kit. */
+const ELEGOO_BOARD_KINDS = new Set<BoardKind>(['esp32']);
+
 /** Does a part belong to the branch the rail currently has selected? */
 function inSelection(component: ComponentMetadata, selectedKey: string): boolean {
   if (selectedKey === KEY_ELEGOO) return ELEGOO_COMPONENT_IDS.has(component.id);
@@ -408,6 +411,11 @@ export const ComponentPickerModal: React.FC<ComponentPickerModalProps> = ({
     [allBoards, searchQuery],
   );
 
+  const matchingElegooBoards = useMemo(
+    () => matchingBoards.filter((kind) => ELEGOO_BOARD_KINDS.has(kind)),
+    [matchingBoards],
+  );
+
   const matchingBoardAds = useMemo(
     () => visibleBoardAds().filter((ad) => matchesSearch(searchQuery, [ad.label])),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -460,7 +468,9 @@ export const ComponentPickerModal: React.FC<ComponentPickerModalProps> = ({
       {
         key: KEY_ELEGOO,
         label: t('editor.componentPicker.elegooKit', 'Elegoo Kit'),
-        count: baseComponents.filter((component) => ELEGOO_COMPONENT_IDS.has(component.id)).length,
+        count:
+          baseComponents.filter((component) => ELEGOO_COMPONENT_IDS.has(component.id)).length +
+          (onSelectBoard ? matchingElegooBoards.length : 0),
       },
     ];
     if (recentComponents.length > 0) {
@@ -483,6 +493,7 @@ export const ComponentPickerModal: React.FC<ComponentPickerModalProps> = ({
     isLoading,
     recentComponents,
     matchingBoards,
+    matchingElegooBoards,
     matchingBoardAds,
     onSelectBoard,
     t,
@@ -527,6 +538,16 @@ export const ComponentPickerModal: React.FC<ComponentPickerModalProps> = ({
       });
     }
     if (selectedKey === KEY_BOARDS) return out;
+
+    if (!!onSelectBoard && selectedKey === KEY_ELEGOO && matchingElegooBoards.length > 0) {
+      out.push({
+        kind: 'boards',
+        key: 'elegoo-boards',
+        label: t('editor.componentPicker.boards'),
+        boards: matchingElegooBoards,
+        ads: [],
+      });
+    }
 
     if ((selectedKey === KEY_ALL || selectedKey === KEY_RECENT) && recentComponents.length > 0) {
       out.push({
@@ -588,6 +609,7 @@ export const ComponentPickerModal: React.FC<ComponentPickerModalProps> = ({
     filteredComponents,
     recentComponents,
     matchingBoards,
+    matchingElegooBoards,
     matchingBoardAds,
     t,
   ]);
@@ -597,7 +619,9 @@ export const ComponentPickerModal: React.FC<ComponentPickerModalProps> = ({
       ? matchingBoards.length + matchingBoardAds.length
       : selectedKey === KEY_RECENT
         ? recentComponents.length
-        : filteredComponents.length;
+        : selectedKey === KEY_ELEGOO
+          ? filteredComponents.length + (onSelectBoard ? matchingElegooBoards.length : 0)
+          : filteredComponents.length;
 
   const activeBranchLabel = useMemo(() => {
     if (selectedKey === KEY_ALL) return null;
