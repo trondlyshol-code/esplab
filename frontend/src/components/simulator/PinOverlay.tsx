@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { useIsCoarsePointer } from '../../utils/useTouchDevice';
 import { rotatePinLocal } from '../../utils/pinPositionCalculator';
 import { readPinInfo } from '../../utils/readPinInfo';
+import { getEducationalPinAlias } from '../../utils/pinDisplayAliases';
 
 /** Minimum visual pin size in *world* pixels at zoom 1 */
 const PIN_VISUAL = 12;
@@ -32,24 +33,6 @@ interface PinInfo {
   y: number; // CSS pixels
   signals?: Array<{ type: string; signal?: string }>;
   description?: string;
-}
-
-/**
- * Classroom-friendly display aliases. Technical pin IDs remain unchanged so
- * saved projects and wiring continue to use A/C exactly as upstream expects.
- */
-function displayDescription(pin: PinInfo): string | undefined {
-  const description = pin.description?.trim();
-  if (!description) return undefined;
-
-  switch (description.toLowerCase()) {
-    case 'anode':
-      return 'Anode (+)';
-    case 'cathode':
-      return 'Cathode (-)';
-    default:
-      return description;
-  }
 }
 
 interface PinOverlayProps {
@@ -168,7 +151,7 @@ export const PinOverlay: React.FC<PinOverlayProps> = ({
     const names = namesAtPad.get(`${pin.x},${pin.y}`) ?? [pin.name];
     const others = names.filter((n) => n !== pin.name);
     const technicalName = others.length ? `${pin.name} (${others.join(', ')})` : pin.name;
-    const alias = displayDescription(pin);
+    const alias = getEducationalPinAlias(pin, pins);
     return alias ? `${technicalName} — ${alias}` : technicalName;
   };
 
@@ -201,7 +184,7 @@ export const PinOverlay: React.FC<PinOverlayProps> = ({
           wrapperOffsetX,
           wrapperOffsetY,
         );
-        const alias = displayDescription(pin);
+        const alias = getEducationalPinAlias(pin, pins);
 
         return (
           <div
